@@ -16,7 +16,7 @@ library(effsize)
 
 1. Make and female graduate enrollment (1967 - 2015). Compare trends in total graduate enroll- ment for males and females (including full-time/part-time and private/public universities) in the United States from 1967 - 2015. Describe your results statistically, graphically and in text.
 
-
+Try Number 1
 ```{r}
 # eliminate the for profit and non profit section of private univserities
 grad_enrollment1<-grad_enrollment %>% 
@@ -206,15 +206,50 @@ public_hist<- ggplot(private_public, aes(x = Public))+
   geom_histogram()
 public_hist
 # public nuniversity enrollment does not look normal but that is ok because n>30
-
-                    
       
-                    
-                      
-                  
+```
 
 
+Try Number 2
+```{r}
+#RESEARCH QUESTION: Does gender effect college enrollment rate
+
+
+# Create a data set of male and female total enrollments
+# look into regressions between genders
+# Create a graphic
+
+# data set of only totals for males and females
+gender_totals<- grad_enrollment %>% 
+  select(Year,Total,Total_Males, Total_Females)
+gender_totals
+
+# Look into regression to see if there is a correlation between gender and college enrollment
+gender_model_male<- lm(Year~Total_Males, data = gender_totals)
+gender_model_male
+# male_enrollment= 0.001902 + 0.00009422(Year)
+
+# look to see if assumtions are met for regression
+plot(gender_model_male)
+# data look normal and linear the risiduals seem to be possibly 
+summary(gender_model_male)
+# R^2: 85 percent of male enrollment rate is determined by year
+# p-value: variables are not significant (p-value = 0)
+
+
+  
 
 ```
+
+
+
+
+
+
+
+
+
+
+
 
 
