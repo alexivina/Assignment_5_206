@@ -56,14 +56,3 @@ grad_summary_males<- grad_enrollment1 %>%
 ```
 
 
-<<<<<<< HEAD
-
-```{r}
-
-=======
-```{r}
-#New Code Chunk
-#DSP
->>>>>>> d1d50a19f815d058fcea7b53daafce1c6e92ab87
-```
-
