@@ -16,201 +16,6 @@ library(effsize)
 
 1. Make and female graduate enrollment (1967 - 2015). Compare trends in total graduate enroll- ment for males and females (including full-time/part-time and private/public universities) in the United States from 1967 - 2015. Describe your results statistically, graphically and in text.
 
-Try Number 1
-```{r}
-# eliminate the for profit and non profit section of private univserities
-grad_enrollment1<-grad_enrollment %>% 
-  select(-Private_Nonprofit, -`Private_For-Profit`)
-
-grad_enrollment1
-
-# exploratory graphs for male and female totals
-explore_graph_male<- ggplot(grad_enrollment1, aes(x = Total_Males, y = Year))+
-  geom_point()
-explore_graph_male
-# male totals appear linear
-explore_graph_female<- ggplot(grad_enrollment1, aes(x= Total_Females, y = Year))+
-  geom_point()
-explore_graph_female
-# female totals appear linear
-explore_graph_male_hist<- ggplot(grad_enrollment1, aes(x = Total_Males))+
-  geom_histogram()
-explore_graph_male_hist
-# male totals appear normal
-explore_graph_female_hist<- ggplot(grad_enrollment1, aes(x = Total_Females))+
-  geom_histogram()
-explore_graph_female_hist
-# female totals DO NOT appear normal
-
-# means and standard deviations of male catagories
-grad_summary_males<- grad_enrollment1 %>% 
-  select(Total_Males,`Males_Full-Time`,`Males_Part-Time`,Public,Private_Total) %>% 
-  summarize(total_mean=mean(Total_Males),
-            full_time_mean=mean(`Males_Full-Time`),
-            part_time_mean=mean(`Males_Part-Time`),
-            public_mean=mean(Public),
-            private_mean=mean(Private_Total),
-            total_sd=sd(Total_Males),
-            Full_Time_sd=sd(`Males_Full-Time`),
-            Part_Time_sd=sd(`Males_Part-Time`),
-            Public_sd=sd(Public),
-            Private_sd=sd(Private_Total))
-
-grad_summary_females<- grad_enrollment1 %>% 
-  select(Total_Females,`Females_Full-Time`,`Females_Part-Time`,Public,Private_Total) %>% 
-  summarize(total_mean=mean(Total_Females),
-            full_time_mean=mean(`Females_Full-Time`),
-            part_time_mean=mean(`Females_Part-Time`),
-            public_mean=mean(Public),
-            private_mean=mean(Private_Total),
-            total_sd=sd(Total_Females),
-            Full_Time_sd=sd(`Females_Full-Time`),
-            Part_Time_sd=sd(`Females_Part-Time`),
-            Public_sd=sd(Public),
-            Private_sd=sd(Private_Total))
-
-
-######################################
-# t-tests between males and females for full time, par-time, private and public universities
-######################################
-# examine relationship between full-time male and female students
-#######################################
-full_time<-grad_enrollment1 %>% 
-  select(`Males_Full-Time`,`Females_Full-Time`)
-full_time
-
-full_timeqqM<- ggplot(full_time, aes(sample = `Males_Full-Time`))+
-  geom_qq()
-full_timeqqM
-# full-time males look linear
-full_timeqqF<- ggplot(full_time, aes(sample = `Females_Full-Time`))+
-  geom_qq()
-full_timeqqF
-# full-time females look linear
-full_timeHistM<- ggplot(full_time, aes(x = `Males_Full-Time`))+
-  geom_histogram()
-full_timeHistM
-# full time males appear normally distributed
-full_timeHistF<- ggplot(full_time, aes(x = `Females_Full-Time`))+
-  geom_histogram()
-full_timeHistF
-# There might be some issues with normality
-
-
-# f-test  for equal variances
-# HO: the variaces are equal
-# HA: The variances are not equal
-full_time_ftest<-var.test(full_time$`Females_Full-Time`, full_time$`Males_Full-Time`)
-full_time_ftest
-#the variances are not equal
-
-# perform a t-test on fulltime males and females
-
-# HO: there is no difference in means of fulltime male and female students
-# HA: There is a difference in means 
-full_time_ttest<- t.test(full_time$`Females_Full-Time`,full_time$`Males_Full-Time`, var.equal = FALSE )
-full_time_ttest
-# there is not a significant difference in mean values of male and female full time student (p-value=0.1652)
-
-
-################################
-#Examine Realtionship between male and female part time students
-#################################
-
-part_time<- grad_enrollment %>% 
-  select(`Males_Part-Time`,`Female_Part-Time`)
-part_time
-#Exploratory Graphs
-part_timeqqM<- ggplot(part_time, aes(sample = `Males_Part-Time`))+
-  geom_qq()
-part_timeqqM
-# Part time males appear linear
-part_timehistM<- ggplot(part_time, aes(x = `Males_Part-Time`))+
-  geom_histogram()
-part_timehistM
-# Part time males appears normal
-part_timeqqF<- ggplot(part_time, aes(sample = `Female_Part-Time`))+
-  geom_qq()
-part_timeqqF
-# Part time femlaes appear linear
-part_timehistF<- ggplot(part_time, aes(x = `Female_Part-Time`))+
-  geom_histogram()
-part_timehistF
-# part time females does not appear normal
-part_time_ftest<- var.test(part_time$`Males_Part-Time`,part_time$`Female_Part-Time`)
-part_time_ftest
-# variances are not equal (p-value = 0)
-# HO: There is no difference in means between male and female part time students
-# HA: There is a difference in means between male and female part time student
-part_time_ttes<- t.test(part_time$`Males_Part-Time`, part_time$`Female_Part-Time`, var.equal = FALSE)
-part_time_ttes
-# Means of male and female part-time students differ significantly (p-value= 0)
-part_time_effect<- cohen.d(part_time$`Males_Part-Time`,part_time$`Female_Part-Time`, na.rm = TRUE)
-part_time_effect
-# There is a large effect size between the means of male and female part time student
-part_time_male_mean<- mean(part_time$`Males_Part-Time`, na.rm = TRUE)
-part_time_male_mean # 423395
-part_time_female_mean<- mean(part_time$`Female_Part-Time`, na.rm = TRUE)
-part_time_female_mean # 561700.3
-# actual difference in means is 138,305.3 more in females
-
-##############################
-# Examine male and female total enrollment
-#############################
-total_grad_enrollment<- grad_enrollment1 %>% 
-  select(Total_Males, Total_Females)
-total_grad_enrollment
-
-# exploratory graphs of data
-total_male_qq<- ggplot(total_grad_enrollment, aes(sample = Total_Males))+
-  geom_qq()
-total_male_qq
-# total male enrollment looks linear
-total_male_hist<- ggplot(total_grad_enrollment, aes(x = Total_Males))+
-  geom_histogram()
-total_male_hist
-# total male enrollment appears normal
-total_female_qq<- ggplot(total_grad_enrollment, aes(sample = Total_Females))+
-  geom_qq()
-total_female_qq
-# Total female enrollment appears linear
-total_female_hist<- ggplot(total_grad_enrollment, aes(x = Total_Females))+
-  geom_histogram()
-total_female_hist
-# female enrollment does not appear normal (but its ok because n>30)
-# HO: variances are equal
-# HA: Variances 
-total_grad_ftest<- var.test(total_grad_enrollment$Total_Males, total_grad_enrollment$Total_Females)
-total_grad_ftest
-# variances are not equal (p-value = 0)
-# HO: the means are not significantly different
-# HA: the mean differ significantly
-total_grad_ttest<- t.test(total_grad_enrollment$Total_Males, total_grad_enrollment$Total_Females, var.equal = FALSE)
-total_grad_ttest
-# there is not a significant difference in means (p-value= 0.2213)
-
-###########################################
-# review difference in private and public enrollment
-############################################
-
-private_public<- grad_enrollment1 %>% 
-  select(Public,Private_Total)
-private_public
-
-# explratory graphs of data
-public_qq<- ggplot(private_public, aes(sample = Public))+
-  geom_qq()
-public_qq
-# public univeristy enrollment look linear
-public_hist<- ggplot(private_public, aes(x = Public))+
-  geom_histogram()
-public_hist
-# public nuniversity enrollment does not look normal but that is ok because n>30
-      
-```
-
-
-Try Number 2
 ```{r}
 #RESEARCH QUESTION: Does gender effect college enrollment rate
 
@@ -249,12 +54,45 @@ summary(gender_model_male)
 
 male_enrollment_graph<- ggplot(gender_totals, aes(y = Total_Males, x = Year))+
   geom_point()+
-  geom_smooth(method = lm, se = TRUE, color = "chartreuse")
+  geom_smooth(method = lm, se = TRUE, color = "chartreuse")+
+  labs(y="Number of Students Enrolled", x = "Year")
 male_enrollment_graph
 
 ######################################
 # Look at the same qustion for women
-####################################
+#####################################
+
+#exploratory graphs
+female_qq<- ggplot(gender_totals, aes(sample = Total_Females))+
+  geom_qq()
+female_qq
+# female enrollment data appeaes linear
+female_hist<- ggplot(gender_totals, aes(x = Total_Females))+
+  geom_histogram()
+female_hist
+# female data seem like it may not be normally distributed
+
+#Look at a regression between year and female enrollment rate
+female_model<- lm(Total_Females~Year, data = gender_totals)
+female_model
+# female_enrollment = -58955502 + 30126 (Year)
+
+# look to see if assumtions are met for regression
+plot(female_model)
+# assumtions seem to be met, some worry with equal variances of risiduals
+summary(female_model)
+# R^2: 98% of female college enrollment rate is determined by year
+# p-value: both variables are highly significant (p-vlaue = 0)
+
+# create a  final graphic for female enrollment rate
+
+female_enrollment_graph<- ggplot(gender_totals, aes(x = Year, y = Total_Females))+
+  geom_point()+
+  geom_smooth(method = lm, se = TRUE, color = "orchid")+
+  labs(y = "Number of Students Enrolled", x = "Year")
+female_enrollment_graph
+
+
 ```
 
 
