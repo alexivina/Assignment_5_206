@@ -41,15 +41,67 @@ explore_graph_female_hist<- ggplot(grad_enrollment1, aes(x = Total_Females))+
 explore_graph_female_hist
 # female totals DO NOT appear normal
 
+# means and standard deviations of male catagories
 grad_summary_males<- grad_enrollment1 %>% 
   select(Total_Males,`Males_Full-Time`,`Males_Part-Time`,Public,Private_Total) %>% 
   summarize(total_mean=mean(Total_Males),
             full_time_mean=mean(`Males_Full-Time`),
             part_time_mean=mean(`Males_Part-Time`),
             public_mean=mean(Public),
-            private_mean=mean(Private_Total))
-  
-  
+            private_mean=mean(Private_Total),
+            total_sd=sd(Total_Males),
+            Full_Time_sd=sd(`Males_Full-Time`),
+            Part_Time_sd=sd(`Males_Part-Time`),
+            Public_sd=sd(Public),
+            Private_sd=sd(Private_Total))
+
+grad_summary_females<- grad_enrollment1 %>% 
+  select(Total_Females,`Females_Full-Time`,`Females_Part-Time`,Public,Private_Total) %>% 
+  summarize(total_mean=mean(Total_Females),
+            full_time_mean=mean(`Females_Full-Time`),
+            part_time_mean=mean(`Females_Part-Time`),
+            public_mean=mean(Public),
+            private_mean=mean(Private_Total),
+            total_sd=sd(Total_Females),
+            Full_Time_sd=sd(`Females_Full-Time`),
+            Part_Time_sd=sd(`Females_Part-Time`),
+            Public_sd=sd(Public),
+            Private_sd=sd(Private_Total))
+
+
+######################################
+# t-tests between males and females for full time, par-time, private and public universities
+######################################
+# examine relationship between full-time male and female students
+full_time<-grad_enrollment1 %>% 
+  select(`Males_Full-Time`,`Females_Full-Time`) %>% 
+  rename(Females_Full_Time == "Females_Full-Time",
+         Males_Full_Time == "Males_Full-Time")
+full_time
+
+full_timeqqM<- ggplot(full_time, aes(sample = `Males_Full-Time`))+
+  geom_qq()
+full_timeqqM
+# full-time males look linear
+full_timeqqF<- ggplot(full_time, aes(sample = `Females_Full-Time`))+
+  geom_qq()
+full_timeqqF
+# full-time females look linear
+full_timeHistM<- ggplot(full_time, aes(x = `Males_Full-Time`))+
+  geom_histogram()
+full_timeHistM
+# full time males appear normally distributed
+full_timeHistF<- ggplot(full_time, aes(x = `Females_Full-Time`))+
+  geom_histogram()
+full_timeHistF
+# There might be some issues with normality
+
+
+# f-test  for equal variances
+# HO: the variaces are equal
+# HA: The variances are not equal
+full_time_ftest<-var.test(full_time$Females_Full-Time, full_time$Males_Full-Time)
+
 
 
 
