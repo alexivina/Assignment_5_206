@@ -41,14 +41,19 @@ explore_graph_female_hist<- ggplot(grad_enrollment1, aes(x = Total_Females))+
 explore_graph_female_hist
 # female totals DO NOT appear normal
 
+#summary of men grad
+grad_summary_males<- grad_enrollment1 %>% 
+  select(Total_Males,`Males_Full-Time`,`Males_Part-Time`,Public,Private_Total) %>% 
+  summarize(total_mean=mean(Total_Males),
+            full_time_mean=mean(`Males_Full-Time`),
+            part_time_mean=mean(`Males_Part-Time`),
+            public_mean=mean(Public),
+            private_mean=mean(Private_Total))
 
 
-```
+  
+  
 
-
-```{r}
-#Danielle's Data Chunk
-#Question 3
 
 
 ```
