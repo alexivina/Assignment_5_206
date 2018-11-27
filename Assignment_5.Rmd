@@ -93,6 +93,15 @@ female_enrollment_graph<- ggplot(gender_totals, aes(x = Year, y = Total_Females)
 female_enrollment_graph
 
 
+# Create one graph of males and females
+
+enrollment_graph<- ggplot(gender_totals, aes(x,y))+
+  geom_point(gender_totals,  aes(y = Total_Males, x = Year))+
+  geom_smooth(method = lm, se = TRUE, color = "chartreuse")+
+  geom_point(gender_totals, aes(x = Year, y = Total_Females))+
+  geom_smooth(method = lm, se = TRUE,  color = "orchid")
+enrollment_graph
+
 ```
 
 
