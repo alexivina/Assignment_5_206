@@ -94,13 +94,17 @@ female_enrollment_graph
 
 
 # Create one graph of males and females
+enrollment_graph<- ggplot(gender_totals, aes(Year))+
+  geom_line(aes(y = Total_Males, colour = "Total_Males"))+
+  geom_line(aes(y = Total_Females, colour = "Total_Females"))+
+  labs(title = "Male & Female College Enrollment U.S. (1967-2015)", x = "Year", y = "Number of Student Enrolled", colour = "Gender of Student")+
+  scale_y_continuous(expand = c(0,0))+
+  scale_x_continuous(expand = c(0,0), limits = c(1967,2015))+
+  theme_dark()
 
-enrollment_graph<- ggplot(gender_totals, aes(x,y))+
-  geom_point(gender_totals,  aes(y = Total_Males, x = Year))+
-  geom_smooth(method = lm, se = TRUE, color = "chartreuse")+
-  geom_point(gender_totals, aes(x = Year, y = Total_Females))+
-  geom_smooth(method = lm, se = TRUE,  color = "orchid")
 enrollment_graph
+
+  
 
 ```
 
