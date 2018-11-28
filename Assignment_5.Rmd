@@ -56,6 +56,7 @@ summary(gender_model_male)
 AIC(gender_model_male)
 # aic = 1210.979
 
+#graph for male enrollment model
 male_enrollment_graph<- ggplot(gender_totals, aes(y = Total_Males, x = Year))+
   geom_point()+
   geom_smooth(method = lm, se = TRUE, color = "chartreuse")+
