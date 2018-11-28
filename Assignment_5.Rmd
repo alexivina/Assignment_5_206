@@ -11,100 +11,179 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(tidyverse)
 grad_enrollment<- read_csv("Grad_enrollment_1967 - 2015.csv")
+library(effsize)
+faculty_salary<- read_csv("faculty_salary.csv")
+library(car)
 ```
 
-1. Make and female graduate enrollment (1967 - 2015). Compare trends in total graduate enroll- ment for males and females (including full-time/part-time and private/public universities) in the United States from 1967 - 2015. Describe your results statistically, graphically and in text.
-
+1. Male and female graduate enrollment (1967 - 2015). Compare trends in total graduate enroll- ment for males and females (including full-time/part-time and private/public universities) in the United States from 1967 - 2015. Describe your results statistically, graphically and in text.
 
 ```{r}
-# eliminate the for profit and non profit section of private univserities
-grad_enrollment1<-grad_enrollment %>% 
-  select(-Private_Nonprofit, -`Private_For-Profit`)
+#RESEARCH QUESTION: Does gender effect college enrollment rate
 
-grad_enrollment1
 
-# exploratory graphs for male and female totals
-explore_graph_male<- ggplot(grad_enrollment1, aes(x = Total_Males, y = Year))+
-  geom_point()
-explore_graph_male
-# male totals appear linear
-explore_graph_female<- ggplot(grad_enrollment1, aes(x= Total_Females, y = Year))+
-  geom_point()
-explore_graph_female
-# female totals appear linear
-explore_graph_male_hist<- ggplot(grad_enrollment1, aes(x = Total_Males))+
+# Create a data set of male and female total enrollments
+# look into regressions between genders
+# Create a graphic
+
+# data set of only totals for males and females
+gender_totals<- grad_enrollment %>% 
+  select(Year,Total,Total_Males, Total_Females)
+gender_totals
+
+#exploratory graphs
+male_qq<- ggplot(gender_totals, aes(sample = Total_Males))+
+  geom_qq()
+male_qq
+# data appears linear
+male_hist<- ggplot(gender_totals, aes(x = Total_Males))+
   geom_histogram()
-explore_graph_male_hist
-# male totals appear normal
-explore_graph_female_hist<- ggplot(grad_enrollment1, aes(x = Total_Females))+
-  geom_histogram()
-explore_graph_female_hist
-# female totals DO NOT appear normal
+male_hist
+# male enrollment appears relativly normally distributed
 
-# means and standard deviations of male catagories
-grad_summary_males<- grad_enrollment1 %>% 
-  select(Total_Males,`Males_Full-Time`,`Males_Part-Time`,Public,Private_Total) %>% 
-  summarize(total_mean=mean(Total_Males),
-            full_time_mean=mean(`Males_Full-Time`),
-            part_time_mean=mean(`Males_Part-Time`),
-            public_mean=mean(Public),
-            private_mean=mean(Private_Total),
-            total_sd=sd(Total_Males),
-            Full_Time_sd=sd(`Males_Full-Time`),
-            Part_Time_sd=sd(`Males_Part-Time`),
-            Public_sd=sd(Public),
-            Private_sd=sd(Private_Total))
 
-grad_summary_females<- grad_enrollment1 %>% 
-  select(Total_Females,`Females_Full-Time`,`Females_Part-Time`,Public,Private_Total) %>% 
-  summarize(total_mean=mean(Total_Females),
-            full_time_mean=mean(`Females_Full-Time`),
-            part_time_mean=mean(`Females_Part-Time`),
-            public_mean=mean(Public),
-            private_mean=mean(Private_Total),
-            total_sd=sd(Total_Females),
-            Full_Time_sd=sd(`Females_Full-Time`),
-            Part_Time_sd=sd(`Females_Part-Time`),
-            Public_sd=sd(Public),
-            Private_sd=sd(Private_Total))
+# Look into regression to see if there is a correlation between gender and college enrollment
+gender_model_male<- lm(Total_Males~Year, data = gender_totals)
+gender_model_male
+# male_enrollment= -17112153 + 9069(Year)
 
+# look to see if assumtions are met for regression
+plot(gender_model_male)
+# data look normal and linear the risiduals seem to be possibly 
+summary(gender_model_male)
+# R^2: 85 percent of male enrollment rate is determined by year
+# p-value: variables are highly significant (p-value = 0)
+AIC(gender_model_male)
+# aic = 1210.979
+
+male_enrollment_graph<- ggplot(gender_totals, aes(y = Total_Males, x = Year))+
+  geom_point()+
+  geom_smooth(method = lm, se = TRUE, color = "chartreuse")+
+  labs(y="Number of Students Enrolled", x = "Year")
+male_enrollment_graph
 
 ######################################
-# t-tests between males and females for full time, par-time, private and public universities
-######################################
-# examine relationship between full-time male and female students
-full_time<-grad_enrollment1 %>% 
-  select(`Males_Full-Time`,`Females_Full-Time`) %>% 
-  rename(Females_Full_Time == "Females_Full-Time",
-         Males_Full_Time == "Males_Full-Time")
-full_time
+# Look at the same qustion for women
+#####################################
 
-full_timeqqM<- ggplot(full_time, aes(sample = `Males_Full-Time`))+
+#exploratory graphs
+female_qq<- ggplot(gender_totals, aes(sample = Total_Females))+
   geom_qq()
-full_timeqqM
-# full-time males look linear
-full_timeqqF<- ggplot(full_time, aes(sample = `Females_Full-Time`))+
+female_qq
+# female enrollment data appeaes linear
+female_hist<- ggplot(gender_totals, aes(x = Total_Females))+
+  geom_histogram()
+female_hist
+# female data seem like it may not be normally distributed
+
+#Look at a regression between year and female enrollment rate
+female_model<- lm(Total_Females~Year, data = gender_totals)
+female_model
+# female_enrollment = -58955502 + 30126 (Year)
+
+# look to see if assumtions are met for regression
+plot(female_model)
+# assumtions seem to be met, some worry with equal variances of risiduals
+summary(female_model)
+# R^2: 98% of female college enrollment rate is determined by year
+# p-value: both variables are highly significant (p-vlaue = 0)
+AIC(female_model)
+# aic = 1217.443
+
+# create a  final graphic for female enrollment rate
+
+female_enrollment_graph<- ggplot(gender_totals, aes(x = Year, y = Total_Females))+
+  geom_point()+
+  geom_smooth(method = lm, se = TRUE, color = "orchid")+
+  labs(y = "Number of Students Enrolled", x = "Year")
+female_enrollment_graph
+
+
+# Create one graph of males and females
+enrollment_graph<- ggplot(gender_totals, aes(Year))+
+  geom_line(aes(y = Total_Males, colour = "Total Males"))+
+  geom_line(aes(y = Total_Females, colour = "Total Females"))+
+  labs(title = "Male & Female College Enrollment U.S. (1967-2015)", x = "Year", y = "Number of Student Enrolled", colour = "Gender of Student")+
+  scale_y_continuous(expand = c(0,0))+
+  scale_x_continuous(expand = c(0,0), limits = c(1967,2015))+
+  theme_dark()
+
+enrollment_graph
+
+
+
+
+  
+
+```
+
+
+4. Exploring academic salaries for professors in U.S. colleges. Explore relationships between
+variables in the ‘Faculty salary data (2008 - 2009 survey)’ dataset. Develop a model describing faculty
+salary based on data for faculty sex, rank, years in current position, field, and number of years since
+doctoral degree was earned. You should make decisions regarding which variables should remain in your
+final model. Describe the results qualitatively and quantitatively (i.e., don’t just report the statistical
+results of the model – make sure you describe interesting findings in text). You can also discuss any
+concerns that you have with the model(s) you present, if any
+
+```{r}
+# data wrangling
+faculty_salary1<- faculty_salary %>% 
+  mutate(Discipline = case_when
+         (`Discipline (A = Theoretical, B = Applied)` == "B" ~ "Apllied", 
+                  `Discipline (A = Theoretical, B = Applied)`  == "A" ~"Theoretical")) %>% 
+  select(-`Discipline (A = Theoretical, B = Applied)`) 
+
+names(faculty_salary1)<- c("faculty_rank", "years_since_phd", "years_employed", "sex", "salary", "discipline")
+
+faculty_salary1
+
+# Exploratory graphs for salary
+salary_qq<- ggplot(faculty_salary1, aes(sample = salary))+
   geom_qq()
-full_timeqqF
-# full-time females look linear
-full_timeHistM<- ggplot(full_time, aes(x = `Males_Full-Time`))+
+salary_qq
+# salary data looks linear
+salary_hist<- ggplot(faculty_salary1, aes(x = salary))+
   geom_histogram()
-full_timeHistM
-# full time males appear normally distributed
-full_timeHistF<- ggplot(full_time, aes(x = `Females_Full-Time`))+
-  geom_histogram()
-full_timeHistF
-# There might be some issues with normality
+salary_hist
+# salary looks relatively normal
+
+#################
+# Create a model for salary
+#################
+
+salary_model<- lm(salary~faculty_rank + years_since_phd + years_employed + sex + discipline, data = faculty_salary1)
+salary_model
+
+# salary = 93280.4 + 535.1(years_since_phd) - 14417.6(discipline_theoretical) -12907.6(faculty_rankAsstProf) + 32158.4(faculty_rankProf) - 489.5(years_employed) + 4783.5(sexMale)
+
+# look to see if regression assumptions are met
+plot(salary_model)
+# risidual seem to be normally distributed
+summary(salary_model)
+# all variables are significant EXCEPT sex, R^2 is relatively low (0.44) 
+vif(salary_model)
+# vif for all variables is under 4 so there is no colinearity between variables
+AIC(salary_model)
 
 
-# f-test  for equal variances
-# HO: the variaces are equal
-# HA: The variances are not equal
-full_time_ftest<-var.test(full_time$Females_Full-Time, full_time$Males_Full-Time)
+
+
+
+
+
+
 
 # whats up dude?
 
 
 ```
+
+
+
+
+
+
+
 
 
