@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 grad_enrollment<- read_csv("Grad_enrollment_1967 - 2015.csv")
 library(effsize)
-facutly_salary<- read_csv("faculty_salary.csv")
+faculty_salary<- read_csv("faculty_salary.csv")
 ```
 
 1. Male and female graduate enrollment (1967 - 2015). Compare trends in total graduate enroll- ment for males and females (including full-time/part-time and private/public universities) in the United States from 1967 - 2015. Describe your results statistically, graphically and in text.
@@ -120,7 +120,7 @@ concerns that you have with the model(s) you present, if any
 
 ```{r}
 # data wrangling
-faculty_salary1<- faculty_salary_ %>% 
+faculty_salary1<- faculty_salary %>% 
   mutate(Discipline = case_when
          (`Discipline (A = Theoretical, B = Applied)` == "B" ~ "Apllied", 
                   `Discipline (A = Theoretical, B = Applied)`  == "A" ~"Theoretical")) %>% 
@@ -131,10 +131,23 @@ names(faculty_salary1)<- c("faculty_rank", "years_since_phd", "years_employed", 
 faculty_salary1
 
 # Exploratory graphs for salary
-salary_qq<- ggplot(faculty_salary1, aes(sample = Salary($)))+
+salary_qq<- ggplot(faculty_salary1, aes(sample = salary))+
   geom_qq()
 salary_qq
+# salary data looks linear
+salary_hist<- ggplot(faculty_salary1, aes(x = salary))+
+  geom_histogram()
+salary_hist
+# salary looks relatively normal
 
+#################
+# Create a model for salary
+#################
+
+salary_model<- lm(salary~faculty_rank + years_since_phd + years_employed + sex + discipline, data = faculty_salary1)
+salary_model
+
+# salary = 93280.4 + 535.1(years_since_phd) - 14417.6(discipline_theoretical) -12907.6(faculty_rankAsstProf) + 32158.4(faculty_rankProf) - 489.5(years_employed) + 4783.5(sexMale)
 
 
 
