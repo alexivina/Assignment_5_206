@@ -12,10 +12,10 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 grad_enrollment<- read_csv("Grad_enrollment_1967 - 2015.csv")
 library(effsize)
-
+facutly_salary<- read_csv("faculty_salary.csv")
 ```
 
-1. Make and female graduate enrollment (1967 - 2015). Compare trends in total graduate enroll- ment for males and females (including full-time/part-time and private/public universities) in the United States from 1967 - 2015. Describe your results statistically, graphically and in text.
+1. Male and female graduate enrollment (1967 - 2015). Compare trends in total graduate enroll- ment for males and females (including full-time/part-time and private/public universities) in the United States from 1967 - 2015. Describe your results statistically, graphically and in text.
 
 ```{r}
 #RESEARCH QUESTION: Does gender effect college enrollment rate
@@ -96,8 +96,8 @@ female_enrollment_graph
 
 # Create one graph of males and females
 enrollment_graph<- ggplot(gender_totals, aes(Year))+
-  geom_line(aes(y = Total_Males, colour = "Total_Males"))+
-  geom_line(aes(y = Total_Females, colour = "Total_Females"))+
+  geom_line(aes(y = Total_Males, colour = "Total Males"))+
+  geom_line(aes(y = Total_Females, colour = "Total Females"))+
   labs(title = "Male & Female College Enrollment U.S. (1967-2015)", x = "Year", y = "Number of Student Enrolled", colour = "Gender of Student")+
   scale_y_continuous(expand = c(0,0))+
   scale_x_continuous(expand = c(0,0), limits = c(1967,2015))+
@@ -110,8 +110,43 @@ enrollment_graph
 ```
 
 
+4. Exploring academic salaries for professors in U.S. colleges. Explore relationships between
+variables in the ‘Faculty salary data (2008 - 2009 survey)’ dataset. Develop a model describing faculty
+salary based on data for faculty sex, rank, years in current position, field, and number of years since
+doctoral degree was earned. You should make decisions regarding which variables should remain in your
+final model. Describe the results qualitatively and quantitatively (i.e., don’t just report the statistical
+results of the model – make sure you describe interesting findings in text). You can also discuss any
+concerns that you have with the model(s) you present, if any
+
+```{r}
+# data wrangling
+faculty_salary1<- faculty_salary_ %>% 
+  mutate(Discipline = case_when
+         (`Discipline (A = Theoretical, B = Applied)` == "B" ~ "Apllied", 
+                  `Discipline (A = Theoretical, B = Applied)`  == "A" ~"Theoretical")) %>% 
+  select(-`Discipline (A = Theoretical, B = Applied)`) 
+
+names(faculty_salary1)<- c("faculty_rank", "years_since_phd", "years_employed", "sex", "salary", "discipline")
+
+faculty_salary1
+
+# Exploratory graphs for salary
+salary_qq<- ggplot(faculty_salary1, aes(sample = Salary($)))+
+  geom_qq()
+salary_qq
 
 
+
+
+
+
+
+
+
+
+
+
+```
 
 
 
