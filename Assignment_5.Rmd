@@ -102,7 +102,7 @@ full_timeHistF
 # HA: The variances are not equal
 full_time_ftest<-var.test(full_time$Females_Full-Time, full_time$Males_Full-Time)
 
-
+# whats up dude?
 
 
 ```
