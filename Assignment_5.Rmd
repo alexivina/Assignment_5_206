@@ -16,7 +16,7 @@ faculty_salary<- read_csv("faculty_salary.csv")
 library(car)
 ```
 
-1. Male and female graduate enrollment (1967 - 2015). Compare trends in total graduate enroll- ment for males and females (including full-time/part-time and private/public universities) in the United States from 1967 - 2015. Describe your results statistically, graphically and in text.
+1. Male and female graduate enrollment (1967 - 2015). Compare trends in total graduate enrollment for males and females (including full-time/part-time and private/public universities) in the United States from 1967 - 2015. Describe your results statistically, graphically and in text.
 
 ```{r}
 #RESEARCH QUESTION: Does gender effect college enrollment rate
@@ -104,7 +104,7 @@ female_enrollment_graph
 enrollment_graph<- ggplot(gender_totals, aes(Year))+
   geom_line(aes(y = Total_Males, colour = "Total Males"))+
   geom_line(aes(y = Total_Females, colour = "Total Females"))+
-  labs(title = "Male & Female College Enrollment U.S. (1967-2015)", x = "Year", y = "Number of Student Enrolled", colour = "Gender of Student")+
+  labs(title = "Male & Female College Enrollment U.S. (1967-2015)", x = "Year", y = "Number of Students Enrolled", colour = "Gender of Student")+
   scale_y_continuous(expand = c(0,0))+
   scale_x_continuous(expand = c(0,0), limits = c(1967,2015))+
   theme_dark()
@@ -112,7 +112,13 @@ enrollment_graph<- ggplot(gender_totals, aes(Year))+
 enrollment_graph
 
 
+###Couple of things: Is there a way we can adjust the y-axis to include the female low of ~265,000 in 1967 and high of 172,000 in 2015? 
 
+###Results need explanation: Good Example 1 (thorough):
+#“Setosa sepal length significantly predicts sepal width (b = 0.79, t(48) = 7.6, p < 0.001) with a strong positive correlation between the two (Pearson’s r = 0.74). The overall model (width = 0.79(length) − 0.57; both in centimeters) explains a significant amount of variance in sepal width (F(1,48) = 59, p < 0.001, R2 = 0.55).”
+
+
+###Something like: Year significantly predicts male and female graduate enrollment (statics reported respectfully). 
 
   
 
