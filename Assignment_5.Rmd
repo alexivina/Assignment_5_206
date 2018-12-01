@@ -14,6 +14,7 @@ grad_enrollment<- read_csv("Grad_enrollment_1967 - 2015.csv")
 library(effsize)
 faculty_salary<- read_csv("faculty_salary.csv")
 library(car)
+library(kableExtra)
 ```
 
 1. Male and female graduate enrollment (1967 - 2015). Compare trends in total graduate enrollment for males and females (including full-time/part-time and private/public universities) in the United States from 1967 - 2015. Describe your results statistically, graphically and in text.
@@ -142,6 +143,10 @@ Phds_chi
 
 Phds_select <- subset(Phds_prop, rownames(Phds_prop) %in%
   c("Female_Physical_science","Female_Engineering","Female_Education","Female_Humanities"))
+
+Phds_prop_table<- kable(Phds_select, col.names = c("1985","2000","2015"), caption = "Changes in field of study ") %>% 
+  kable_styling(c("striped", "border",full_width = FALSE, position ="center"))
+Phds_prop_table
   
 ```
 
