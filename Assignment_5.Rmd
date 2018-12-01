@@ -16,7 +16,7 @@ faculty_salary<- read_csv("faculty_salary.csv")
 library(car)
 ```
 
-1. Male and female graduate enrollment (1967 - 2015). Compare trends in total graduate enroll- ment for males and females (including full-time/part-time and private/public universities) in the United States from 1967 - 2015. Describe your results statistically, graphically and in text.
+1. Male and female graduate enrollment (1967 - 2015). Compare trends in total graduate enrollment for males and females (including full-time/part-time and private/public universities) in the United States from 1967 - 2015. Describe your results statistically, graphically and in text.
 
 ```{r}
 #RESEARCH QUESTION: Does gender effect college enrollment rate
@@ -56,6 +56,7 @@ summary(gender_model_male)
 AIC(gender_model_male)
 # aic = 1210.979
 
+#graph for male enrollment model
 male_enrollment_graph<- ggplot(gender_totals, aes(y = Total_Males, x = Year))+
   geom_point()+
   geom_smooth(method = lm, se = TRUE, color = "chartreuse")+
@@ -103,7 +104,7 @@ female_enrollment_graph
 enrollment_graph<- ggplot(gender_totals, aes(Year))+
   geom_line(aes(y = Total_Males, colour = "Total Males"))+
   geom_line(aes(y = Total_Females, colour = "Total Females"))+
-  labs(title = "Male & Female College Enrollment U.S. (1967-2015)", x = "Year", y = "Number of Student Enrolled", colour = "Gender of Student")+
+  labs(title = "Male & Female College Enrollment U.S. (1967-2015)", x = "Year", y = "Number of Students Enrolled", colour = "Gender of Student")+
   scale_y_continuous(expand = c(0,0))+
   scale_x_continuous(expand = c(0,0), limits = c(1967,2015))+
   theme_dark()
@@ -111,12 +112,19 @@ enrollment_graph<- ggplot(gender_totals, aes(Year))+
 enrollment_graph
 
 
+###Couple of things: Is there a way we can adjust the y-axis to include the female low of ~265,000 in 1967 and high of 172,000 in 2015? 
 
+###Results need explanation: Good Example 1 (thorough):
+#“Setosa sepal length significantly predicts sepal width (b = 0.79, t(48) = 7.6, p < 0.001) with a strong positive correlation between the two (Pearson’s r = 0.74). The overall model (width = 0.79(length) − 0.57; both in centimeters) explains a significant amount of variance in sepal width (F(1,48) = 59, p < 0.001, R2 = 0.55).”
+
+
+###Something like: Year significantly predicts male and female graduate enrollment (statics reported respectfully). 
 
   
 
 ```
 
+<<<<<<< HEAD
 2. Shifts in female PhD recipients by field (1985, 2000, and 2015). Describe if and how there was a shift in PhDs awarded to females in four fields (Physical and Earth Sciences, Engineering, Education, and Humanities & Arts) in 1985, 2000, and 2015. Describe your results statistically, in a graph or table, and in text. Note: There are several ways that you can interpret this question. You are invited to decide which you think is/are most interesting. Just be really clear about what you are asking/answering in your report.
 
 ```{r}
@@ -140,6 +148,48 @@ Phds_chi
 
 ```
 
+=======
+```{r,include=FALSE}
+
+#read in the salaries dataframe from excel. Omit the extra "N/A" entries using the na.omit function
+salary<-read_csv("Salaries.csv")%>%
+  na.omit()
+```
+
+```{r, include=FALSE}
+wsr_salary<-wilcox.test(salary$Job_male, salary$Job_female, paired =TRUE)
+
+
+#There is a significant difference between male and female PhD recipients in non-postdoc employment positions in 2015 (V= 101, p=0.003).
+```
+
+```{r, echo=FALSE}
+wsr_salary
+```
+
+
+```{r, include=FALSE}
+wsr_salary_postdoc<-wilcox.test(salary$Postdoc_male, salary$postdoc_female, paired = TRUE)
+wsr_salary_postdoc
+
+#There is not a significant difference between male and female starting postdoctoral position salaries in 2015 (V=19.5, p=0.888).
+```
+
+```{r, echo=FALSE}
+wsr_salary_postdoc
+```
+
+
+Communicating Statistical Results:
+Non-Parametric Wilcomxon Signed Rank anaylsis for data collected from 15 fields of study in the year 2015 revealed that the median salaries (in dollars) differed significantly for male and female PhD recipients in non-postdoc employment positions (V= 101, p=0.003). In all fields except Physics & Astonomy, men recieved higher salaries. 
+
+However, a separate non-parametric wimcoxon signed rank test for PhD recipients starting posdoc positions revealed that there was *not* a signficant difference between salaries for males and females (V=19.5, p=.888). In several fields of study, males and females recieved the exact same salary. Females recieved a slightly higher median salary in some fields, while males were paid slightly more in others. 
+
+
+
+
+
+>>>>>>> 155b04f2a872e8703c8a57a3c4fe93877f2c5fe3
 
 4. Exploring academic salaries for professors in U.S. colleges. Explore relationships between
 variables in the ‘Faculty salary data (2008 - 2009 survey)’ dataset. Develop a model describing faculty
