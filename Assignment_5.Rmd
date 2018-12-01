@@ -139,6 +139,10 @@ Phds_prop <- prop.table(as.matrix(Phds_new), 2)
 Phds_chi <- chisq.test(Phds_new)
 
 Phds_chi
+
+Phds_select <- subset(Phds_prop, rownames(Phds_prop) %in%
+  c("Female_Physical_science","Female_Engineering","Female_Education","Female_Humanities"))
+  
 ```
 
 3. Male and female salaries for starting postdoctoral and other employment positions (2015). Compare median salaries for male and female doctorate recipients in 2015. Answer these two questions: Does median salary differ significantly between male and female starting postdoc positions? Does median salary differ significantly between male and female PhD recipients in non-postdoc employment positions?
