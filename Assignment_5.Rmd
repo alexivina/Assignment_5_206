@@ -181,7 +181,8 @@ names(Phds_2_expand)[2] <-paste("Year")
 
 bar_graph_stack <- ggplot() +
   geom_bar(aes(y = Proportion, x = Year, fill = Field), data = Phds_2_expand, stat = "identity") + coord_flip() + scale_fill_brewer(palette = 16) + labs(title = "Shifts in female PhD recipients by field") +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_classic()
 
 bar_graph_stack
 
