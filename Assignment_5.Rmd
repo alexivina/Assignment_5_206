@@ -180,9 +180,10 @@ Phds_2_expand <- melt(Phds_2,id.vars=c("Field"), value.name = "Proportion")
 names(Phds_2_expand)[2] <-paste("Year")
 
 bar_graph_stack <- ggplot() +
-  geom_bar(aes(y = Proportion, x = Year, fill = Field), data = Phds_2_expand, stat = "identity") + coord_flip() + scale_fill_brewer(palette = 16) + labs(title = "Shifts in female PhD recipients by field") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  theme_classic()
+  geom_bar(aes(y = Proportion, x = Year, fill = Field), data = Phds_2_expand, stat = "identity", width = 0.5) + coord_flip() + scale_fill_brewer(palette = 16) + labs(title = "Shifts in female PhD recipients by field") +
+   theme_classic() +
+  theme(plot.title = element_text(hjust = 0.5))
+
 
 bar_graph_stack
 
