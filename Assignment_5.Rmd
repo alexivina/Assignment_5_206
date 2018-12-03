@@ -188,11 +188,23 @@ wsr_salary_postdoc
 wsr_salary_postdoc
 ```
 
+```{r}
+cliffsdelta<-cliff.delta(salary$Job_male, salary$Job_female, paired =TRUE)
+cliffsdelta
+```
+
+
+```{r}
+cliffsdelta_postdoc<-cliff.delta(salary$Postdoc_male, salary$postdoc_female, paired = TRUE)
+cliffsdelta_postdoc
+```
+
+
 
 Communicating Statistical Results:
-Non-Parametric Wilcomxon Signed Rank anaylsis for data collected from 15 fields of study in the year 2015 revealed that the median salaries (in dollars) differed significantly for male and female PhD recipients in non-postdoc employment positions (V= 101, p=0.003). In all fields except Physics & Astonomy, men recieved higher salaries. 
+Non-Parametric Wilcomxon Signed Rank anaylsis for data collected from 15 fields of study in the year 2015 revealed th at the median salaries (in dollars) differed significantly for male and female PhD recipients in non-postdoc employment positions (V= 101, p=0.003). In all fields except Physics & Astonomy, men recieved either equal or moderately higher salaries(cliffs delta=0.213). 
 
-However, a separate non-parametric wimcoxon signed rank test for PhD recipients starting posdoc positions revealed that there was *not* a signficant difference between salaries for males and females (V=19.5, p=.888). In several fields of study, males and females recieved the exact same salary. Females recieved a slightly higher median salary in some fields, while males were paid slightly more in others. 
+However, a separate non-parametric wimcoxon signed rank test for PhD recipients starting posdoc positions revealed that there was *not* a signficant difference between salaries for males and females (V=19.5, p=.888). In several fields of study, males and females recieved the exact same salary. Females recieved a slightly higher median salary in some fields, while males were paid slightly more in others (cliffs delta=.04).
 
 
 
