@@ -206,10 +206,16 @@ wsr_salary<-wilcox.test(salary$Job_male, salary$Job_female, paired =TRUE)
 #There is a significant difference between male and female PhD recipients in non-postdoc employment positions in 2015 (V= 101, p=0.003).
 ```
 
-```{r, echo=FALSE}
+
+
+```{r, include=FALSE}
 wsr_salary
 ```
 
+```{r, include=FALSE}
+cliffsdelta<-cliff.delta(salary$Job_male, salary$Job_female, paired =TRUE)
+cliffsdelta
+```
 
 ```{r, include=FALSE}
 wsr_salary_postdoc<-wilcox.test(salary$Postdoc_male, salary$postdoc_female, paired = TRUE)
@@ -218,33 +224,23 @@ wsr_salary_postdoc
 #There is not a significant difference between male and female starting postdoctoral position salaries in 2015 (V=19.5, p=0.888).
 ```
 
-```{r, echo=FALSE}
+
+```{r, include=FALSE}
 wsr_salary_postdoc
 ```
 
-```{r}
-cliffsdelta<-cliff.delta(salary$Job_male, salary$Job_female, paired =TRUE)
-cliffsdelta
-```
-
-
-```{r}
+```{r, include=FALSE}
 cliffsdelta_postdoc<-cliff.delta(salary$Postdoc_male, salary$postdoc_female, paired = TRUE)
 cliffsdelta_postdoc
 ```
 
 
-
 Communicating Statistical Results:
-Non-Parametric Wilcomxon Signed Rank anaylsis for data collected from 15 fields of study in the year 2015 revealed th at the median salaries (in dollars) differed significantly for male and female PhD recipients in non-postdoc employment positions (V= 101, p=0.003). In all fields except Physics & Astonomy, men recieved either equal or moderately higher salaries(cliffs delta=0.213). 
+Non-Parametric Wilcomxon Signed Rank anaylsis for data collected from 15 fields of study in the year 2015 revealed that the median salaries (in dollars) differed significantly for male and female PhD recipients in non-postdoc employment positions (V= 101, p=0.003). In all fields except Physics & Astonomy, men recieved either equal or moderately higher salaries(cliffs delta=0.213). 
 
 However, a separate non-parametric wimcoxon signed rank test for PhD recipients starting posdoc positions revealed that there was *not* a signficant difference between salaries for males and females (V=19.5, p=.888). In several fields of study, males and females recieved the exact same salary. Females recieved a slightly higher median salary in some fields, while males were paid slightly more in others (cliffs delta=.04).
 
 
-
-
-
->>>>>>> 155b04f2a872e8703c8a57a3c4fe93877f2c5fe3
 
 4. Exploring academic salaries for professors in U.S. colleges. Explore relationships between
 variables in the ‘Faculty salary data (2008 - 2009 survey)’ dataset. Develop a model describing faculty
