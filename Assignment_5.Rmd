@@ -16,6 +16,8 @@ faculty_salary<- read_csv("faculty_salary.csv")
 library(car)
 library(kableExtra)
 library(stargazer)
+library(knitr)
+library(reshape2)
 ```
 
 1. Male and female graduate enrollment (1967 - 2015). Compare trends in total graduate enrollment for males and females (including full-time/part-time and private/public universities) in the United States from 1967 - 2015. Describe your results statistically, graphically and in text.
@@ -167,7 +169,12 @@ Phds_select <- subset(Phds_prop, rownames(Phds_prop) %in%
 Phds_prop_table<- kable(Phds_select, col.names = c("1985","2000","2015"), caption = "Changes in field of study ") %>% 
   kable_styling(c("striped", "border",full_width = FALSE, position ="center"))
 Phds_prop_table
+
+# Phds_select_2 <-subset(Phds_new, rownames(Phds_new) %in%
+ # c("Female_Physical_science","Female_Engineering","Female_Education","Female_Humanities"))
   
+Phds_2 <- as.data.frame(Phds_select) %>% 
+  mutate(., Field = c("Physical & Eart Sciences","Engineering","Education","Arts & Humanities"))
 ```
 
 3. Male and female salaries for starting postdoctoral and other employment positions (2015). Compare median salaries for male and female doctorate recipients in 2015. Answer these two questions: Does median salary differ significantly between male and female starting postdoc positions? Does median salary differ significantly between male and female PhD recipients in non-postdoc employment positions?
