@@ -9,6 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 ```{r}
+
 library(tidyverse)
 grad_enrollment<- read_csv("Grad_enrollment_1967 - 2015.csv")
 library(effsize)
@@ -188,10 +189,7 @@ bar_graph_stack
 
 3. Male and female salaries for starting postdoctoral and other employment positions (2015). Compare median salaries for male and female doctorate recipients in 2015. Answer these two questions: Does median salary differ significantly between male and female starting postdoc positions? Does median salary differ significantly between male and female PhD recipients in non-postdoc employment positions?
 
-```{r}
 
-
-```
 
 =======
 ```{r,include=FALSE}
@@ -322,6 +320,16 @@ AIC(salarly_model4)
 # aic = 9088.57
 vif(salarly_model4)
 # super high correlations between years_since_phd, years_employed and the interaction term
+
+####################
+# make a model that does not include years_since_phd or years_employed
+###################
+
+salary_model5<- lm(salary~faculty_rank + sex + discipline, data = faculty_salary1)
+
+summary(salary_model5)
+vif(salary_model5) # no concern for colinearity
+AIC(salary_model) # AIC = 9093.826
 
 #################
 # make a graph for faculty salary
