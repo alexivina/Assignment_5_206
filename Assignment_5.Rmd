@@ -102,7 +102,7 @@ female_enrollment_graph
 
 
 # Create one graph of males and females
-enrollment_graph<- ggplot(gender_totals, aes(Year))+
+enrollment_graph_0<- ggplot(gender_totals, aes(Year))+
   geom_line(aes(y = Total_Males, colour = "Total Males"))+
   geom_line(aes(y = Total_Females, colour = "Total Females"))+
   labs(title = "Male & Female College Enrollment U.S. (1967-2015)", x = "Year", y = "Number of Students Enrolled", colour = "Gender of Student")+
@@ -110,8 +110,16 @@ enrollment_graph<- ggplot(gender_totals, aes(Year))+
   scale_x_continuous(expand = c(0,0), limits = c(1967,2015))+
   theme_dark()
 
-enrollment_graph
+enrollment_graph_0
 
+enrollment_graph<- ggplot(gender_totals, aes(Year))+
+  geom_point(aes(y = Total_Males))+
+  geom_smooth(method = lm, se = TRUE, size = 0.5, alpha = 0.5, aes(y = Total_Males, colour = "Total Males"))+
+  geom_point(aes(y = Total_Females))+
+  geom_smooth(method = lm, se = TRUE, size = 0.5, alpha = 0.5, aes(y = Total_Females, colour = "Total_Females"))+
+  labs(x = "Year", y = "Number of Students", title = "Male and Female College Enrollment Rates", colour = "Gender of Student")
+  
+enrollment_graph
 
 ###Couple of things: Is there a way we can adjust the y-axis to include the female low of ~265,000 in 1967 and high of 172,000 in 2015? 
 
