@@ -159,7 +159,7 @@ Phds_new <- select(Phds,"1985_Number":"2015_Number") %>%
   rename("1985" = "1985_Number", "2000" = "2000_Number", "2015" = "2015_Number")
 
 
-Phds_prop <- prop.table(as.matrix(Phds_new), 2)
+Phds_prop <- round(prop.table(as.matrix(Phds_new), 1), 2)
 
 Phds_chi <- chisq.test(Phds_new)
 
@@ -179,7 +179,7 @@ Phds_2_expand <- melt(Phds_2,id.vars=c("Field"), value.name = "Proportion")
 names(Phds_2_expand)[2] <-paste("Year")
 
 bar_graph_stack <- ggplot() +
-  geom_bar(aes(y = Proportion, x = Year, fill = Field), data = Phds_2_expand, stat = "identity") + coord_flip() + scale_fill_brewer(palette = 12) + labs(title = "Shifts in female PhD recipients by field") +
+  geom_bar(aes(y = Proportion, x = Year, fill = Field), data = Phds_2_expand, stat = "identity") + coord_flip() + scale_fill_brewer(palette = 16) + labs(title = "Shifts in female PhD recipients by field") +
   theme(plot.title = element_text(hjust = 0.5))
 
 bar_graph_stack
