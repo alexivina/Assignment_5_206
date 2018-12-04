@@ -163,15 +163,20 @@ Total_Males-
 Year significantly predicts college enrollment rates for males (b = 9069, t(47) = 16.61, p < 0.001) with a strong positive
 correlation between the two (Pearson’s r = 0.92). The overall model (Total Male enrollment = -17,112,153 + 9069 (Year) explains a significant amount of variance in enrollment rate (F(1,47) = 476, p < 0.001, R2 = 0.8545).”
 
+male_enrollment = -17112153 + 9069(Year)
+
+
 Total_Females-
 Year significantly predicts college enrollment rates for females (b = 30126, t(47) = 51.66, p < 0.001) with a strong positive
 correlation between the two (Pearson’s r = 0.99). The overall model (Total Female enrollment = -58955502 + 30126 (Year) explains a significant amount of variance in enrollment rate (F(1,47) = 2669, p < 0.001, R2 = 0.9827).
+
+female_enrollment = -0.0000005896 + 30130(Year)
 
 
 
 2. Shifts in female PhD recipients by field (1985, 2000, and 2015). Describe if and how there was a shift in PhDs awarded to females in four fields (Physical and Earth Sciences, Engineering, Education, and Humanities & Arts) in 1985, 2000, and 2015. Describe your results statistically, in a graph or table, and in text. Note: There are several ways that you can interpret this question. You are invited to decide which you think is/are most interesting. Just be really clear about what you are asking/answering in your report.
 
-```{r}
+```{r, echo=FALSE, message=FALSE, error=FALSE, warning=FALSE, results=TRUE}
 Phds <- read_csv("Phds_female_fields.csv")
 
 rownames(Phds) <- c("Female_Lifesciences", "Female_Physical_science", "Female_Math", "Female_Psychology", "Female_Engineering", "Female_Education", "Female_Humanities", "Female_Other") 
@@ -393,9 +398,11 @@ stargazer(salary_model3, type = "html")
 
 
 Write Up:
+
 Formula: 
+salary = 127854.34 -32928.4(Associate_Professor) - 46032.55(Assitant_Professor) + 61.01(years_since_phd) + 4349.37(sexMale) - 13937.47(disciplineTheoretical)
 
-
+<<<<<<< HEAD
 ```{r}
 
 ###Created model to look at factors affecting salary of professors
@@ -411,6 +418,9 @@ summary(salary_model_no_rank)
 
 ```{r}
 salary_model_interact<-lm(salary~ years_since_phd + years_employed + sex + discipline + years_since_phd*years_employed, data= faculty_salary1)
+=======
+The formula for faculty salary will predict salary as a function of a professors rank (here we are using professor as the refrence level and comparing against associate professor and assitant professor), years since someone has gained their PHD, their sex ( here female is the refrence level and male is included in the graph) and lastly discipline (we only look at if the diswcipline is theoretical or applied and here we use applied as the refrence level). What we found was that professors were paid the most and assitant profressors the least by rank and that years every year after your PHD you earned slightly more. It was also apparent that males earned higher wages than femlaes and that those in theoretical disciplines earned less than those in technical disciplines. Over all these variables accounted for 44% (R^2^ = 0.4401) of changes in salary. Looking at the variables observed the rank of a professor and the deispline showed significant results (p-value<0.001) where as sex and years since one earned their PHD did not yeild significant results (p-value>0.001). 
+>>>>>>> 99cdf59be3c4e0ba7b6db377b6b8e3ed87cad926
 
 salary_model_interact
 
