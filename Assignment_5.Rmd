@@ -416,13 +416,6 @@ stargazer(salary_model3, type = "html")
 ```
 
 
-Write Up:
-
-Formula: 
-salary = 127854.34 -32928.4(Associate_Professor) - 46032.55(Assitant_Professor) + 61.01(years_since_phd) + 4349.37(sexMale) - 13937.47(disciplineTheoretical)
-
-The formula for faculty salary will predict salary as a function of a professors rank (here we are using professor as the refrence level and comparing against associate professor and assitant professor), years since someone has gained their PHD, their sex ( here female is the refrence level and male is included in the graph) and lastly discipline (we only look at if the diswcipline is theoretical or applied and here we use applied as the refrence level). What we found was that professors were paid the most and assitant profressors the least by rank and that years every year after your PHD you earned slightly more. It was also apparent that males earned higher wages than femlaes and that those in theoretical disciplines earned less than those in technical disciplines. Over all these variables accounted for 44% (R^2^ = 0.4401) of changes in salary. Looking at the variables observed the rank of a professor and the deispline showed significant results (p-value<0.001) where as sex and years since one earned their PHD did not yeild significant results (p-value>0.001). 
-
 
 
 
