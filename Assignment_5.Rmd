@@ -176,7 +176,8 @@ female_enrollment = -0.0000005896 + 30130(Year)
 
 2. Shifts in female PhD recipients by field (1985, 2000, and 2015). Describe if and how there was a shift in PhDs awarded to females in four fields (Physical and Earth Sciences, Engineering, Education, and Humanities & Arts) in 1985, 2000, and 2015. Describe your results statistically, in a graph or table, and in text. Note: There are several ways that you can interpret this question. You are invited to decide which you think is/are most interesting. Just be really clear about what you are asking/answering in your report.
 
-```{r, echo=FALSE, message=FALSE, error=FALSE, warning=FALSE, results=TRUE}
+```{r,include=FALSE}
+
 Phds <- read_csv("Phds_female_fields.csv")
 
 rownames(Phds) <- c("Female_Lifesciences", "Female_Physical_science", "Female_Math", "Female_Psychology", "Female_Engineering", "Female_Education", "Female_Humanities", "Female_Other") 
@@ -184,12 +185,8 @@ rownames(Phds) <- c("Female_Lifesciences", "Female_Physical_science", "Female_Ma
 Phds_new <- select(Phds,"1985_Number":"2015_Number") %>% 
   rename("1985" = "1985_Number", "2000" = "2000_Number", "2015" = "2015_Number")
 
+Phds_prop <- prop.table(as.matrix(Phds_new), 2)
 
-Phds_prop <- round(prop.table(as.matrix(Phds_new), 1), 2)
-
-Phds_chi <- chisq.test(Phds_new)
-
-Phds_chi
 
 Phds_select <- subset(Phds_prop, rownames(Phds_prop) %in%
   c("Female_Physical_science","Female_Engineering","Female_Education","Female_Humanities"))
@@ -197,6 +194,12 @@ Phds_select <- subset(Phds_prop, rownames(Phds_prop) %in%
 Phds_prop_table<- kable(Phds_select, col.names = c("1985","2000","2015"), caption = "Changes in field of study ") %>% 
   kable_styling(c("striped", "border",full_width = FALSE, position ="center"))
 Phds_prop_table
+
+Phds_prop <- round(prop.table(as.matrix(Phds_new), 1), 2)
+
+Phds_chi <- chisq.test(Phds_new)
+
+Phds_chi
   
 Phds_2 <- as.data.frame(Phds_select) %>% 
   mutate(., Field = c("Physical & Eart Sciences","Engineering","Education","Arts & Humanities"))
@@ -216,6 +219,21 @@ bar_graph_stack
 
 ```
 
+```{r, echo=FALSE}
+Phds_prop_table<- kable(Phds_select, col.names = c("1985","2000","2015"), caption = "Changes in field of study ") %>% 
+  kable_styling(c("striped", "border",full_width = FALSE, position ="center"))
+Phds_prop_table
+
+bar_graph_stack <- ggplot() +
+  geom_bar(aes(y = Proportion, x = Year, fill = Field), data = Phds_2_expand, stat = "identity", width = 0.5) + coord_flip() + scale_fill_brewer(palette = 16) + labs(title = "Proportion of Female PhD Recipients by Field") +
+   theme_classic() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_y_continuous(expand=c(0,0))
+
+bar_graph_stack
+
+```
+
 The proportion of female phD recipients increased in three fields (Physical & Earth Sciences, Engineering, and Arts & Humanities) in 1985, 2000, 2015. 
 
 
@@ -223,7 +241,7 @@ The proportion of female phD recipients increased in three fields (Physical & Ea
 
 
 
-=======
+
 ```{r,include=FALSE}
 
 #read in the salaries dataframe from excel. Omit the extra "N/A" entries using the na.omit function
@@ -390,7 +408,7 @@ AIC(salary_model) # AIC = 9093.826
 
 ```
 
-```{r, results = 'asis', echo=FALSE}
+```{r, include=FALSE}
 
 stargazer(salary_model3, type = "html")
 # possibly use this graph when knitting to convay results not sure how to properly state results for multilinear regression like simple linevar regression. 
@@ -407,7 +425,7 @@ The formula for faculty salary will predict salary as a function of a professors
 
 
 
-```{r}
+```{r, include=FALSE}
 
 ###Created model to look at factors affecting salary of professors
 
@@ -421,12 +439,12 @@ summary(salary_model_no_rank)
 ```
 
 
-```{r}
+```{r, include=FALSE}
 salary_model_interact<-lm(salary~ years_since_phd + years_employed + sex + discipline + years_since_phd*years_employed, data= faculty_salary1)
 ```
 
 
-```{r}
+```{r, include=FALSE}
 salary_model_interact
 
 summary(salary_model_interact)
@@ -448,7 +466,7 @@ summary(salary_model_interact)
 
 
 
-```{r}
+```{r, include=FALSE}
 vif(salary_model_interact)
 AIC(salary_model_interact) 
 #AIC=9140.98
