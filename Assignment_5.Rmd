@@ -8,9 +8,9 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
-```{r}
+```{r include=FALSE}
 
 library(tidyverse)
 grad_enrollment<- read_csv("Grad_enrollment_1967 - 2015.csv")
@@ -25,7 +25,7 @@ library(reshape2)
 
 1. Male and female graduate enrollment (1967 - 2015). Compare trends in total graduate enrollment for males and females (including full-time/part-time and private/public universities) in the United States from 1967 - 2015. Describe your results statistically, graphically and in text.
 
-```{r, echo=FALSE}
+```{r, include=FALSE}
 #RESEARCH QUESTION: Does gender effect college enrollment rate
 
 
@@ -123,7 +123,9 @@ enrollment_graph<- ggplot(gender_totals, aes(Year))+
   geom_smooth(method = lm, se = TRUE, size = 0.5, alpha = 0.5, aes(y = Total_Males, colour = "Total Males"))+
   #geom_point(aes(y = Total_Females))+
   geom_smooth(method = lm, se = TRUE, size = 0.5, alpha = 0.5, aes(y = Total_Females, colour = "Total_Females"))+
-  labs(x = "Year", y = "Number of Students", title = "Male and Female College Enrollment Rates", colour = "Gender of Student")
+  labs(x = "Year", y = "Number of Students", title = "Male and Female College Enrollment Rates", colour = "Gender of Student")+
+  scale_y_continuous(expand = c(0,0))+
+  scale_x_continuous(expand = c(0,0))
   
 enrollment_graph
 
@@ -137,6 +139,21 @@ enrollment_graph
 
   
 
+```
+
+
+
+```{r Model Graph, echo=FALSE}
+enrollment_graph<- ggplot(gender_totals, aes(Year))+
+  #geom_point(aes(y = Total_Males))+
+  geom_smooth(method = lm, se = TRUE, size = 0.5, alpha = 0.5, aes(y = Total_Males, colour = "Total Males"))+
+  #geom_point(aes(y = Total_Females))+
+  geom_smooth(method = lm, se = TRUE, size = 0.5, alpha = 0.5, aes(y = Total_Females, colour = "Total_Females"))+
+  labs(x = "Year", y = "Number of Students", title = "Male and Female College Enrollment Rates", colour = "Gender of Student")+
+  scale_y_continuous(expand = c(0,0))+
+  scale_x_continuous(expand = c(0,0))
+  
+enrollment_graph
 ```
 
 
@@ -257,7 +274,7 @@ results of the model – make sure you describe interesting findings in text). Y
 concerns that you have with the model(s) you present, if any
 
 
-```{r, echo=FALSE}
+```{r, include=FALSE}
 
 
 # data wrangling
@@ -364,14 +381,15 @@ AIC(salary_model) # AIC = 9093.826
 
 ```
 
-```{r, results = 'asis'}
+```{r, results = 'asis', echo=FALSE}
 
 stargazer(salary_model3, type = "html")
 # possibly use this graph when knitting to convay results not sure how to properly state results for multilinear regression like simple linevar regression. 
 ```
 
 
-
+Write Up:
+Formula: 
 
 
 
