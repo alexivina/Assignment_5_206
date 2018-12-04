@@ -3,14 +3,14 @@ title: "Assignment 5"
 author: "Alex Ivina"
 date: "November 26, 2018"
 output:
-  word_document: default
   html_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
-```{r}
+```{r include=FALSE}
 
 library(tidyverse)
 grad_enrollment<- read_csv("Grad_enrollment_1967 - 2015.csv")
@@ -25,7 +25,7 @@ library(reshape2)
 
 1. Male and female graduate enrollment (1967 - 2015). Compare trends in total graduate enrollment for males and females (including full-time/part-time and private/public universities) in the United States from 1967 - 2015. Describe your results statistically, graphically and in text.
 
-```{r}
+```{r, include=FALSE}
 #RESEARCH QUESTION: Does gender effect college enrollment rate
 
 
@@ -119,11 +119,13 @@ enrollment_graph_0<- ggplot(gender_totals, aes(Year))+
 enrollment_graph_0
 
 enrollment_graph<- ggplot(gender_totals, aes(Year))+
-  geom_point(aes(y = Total_Males))+
+  #geom_point(aes(y = Total_Males))+
   geom_smooth(method = lm, se = TRUE, size = 0.5, alpha = 0.5, aes(y = Total_Males, colour = "Total Males"))+
-  geom_point(aes(y = Total_Females))+
+  #geom_point(aes(y = Total_Females))+
   geom_smooth(method = lm, se = TRUE, size = 0.5, alpha = 0.5, aes(y = Total_Females, colour = "Total_Females"))+
-  labs(x = "Year", y = "Number of Students", title = "Male and Female College Enrollment Rates", colour = "Gender of Student")
+  labs(x = "Year", y = "Number of Students", title = "Male and Female College Enrollment Rates", colour = "Gender of Student")+
+  scale_y_continuous(expand = c(0,0))+
+  scale_x_continuous(expand = c(0,0))
   
 enrollment_graph
 
@@ -140,14 +142,29 @@ enrollment_graph
 ```
 
 
+
+```{r Model Graph, echo=FALSE}
+enrollment_graph<- ggplot(gender_totals, aes(Year))+
+  #geom_point(aes(y = Total_Males))+
+  geom_smooth(method = lm, se = TRUE, size = 0.5, alpha = 0.5, aes(y = Total_Males, colour = "Total Males"))+
+  #geom_point(aes(y = Total_Females))+
+  geom_smooth(method = lm, se = TRUE, size = 0.5, alpha = 0.5, aes(y = Total_Females, colour = "Total_Females"))+
+  labs(x = "Year", y = "Number of Students", title = "Male and Female College Enrollment Rates", colour = "Gender of Student")+
+  scale_y_continuous(expand = c(0,0))+
+  scale_x_continuous(expand = c(0,0))
+  
+enrollment_graph
+```
+
+
 Written Results:
 Total_Males-
 Year significantly predicts college enrollment rates for males (b = 9069, t(47) = 16.61, p < 0.001) with a strong positive
-correlation between the two (Pearson’s r = 0.92). The overall model (Total Male enrollment = -17,112,153 + 9069 (Year) explains a significant amount of variance in sepal width (F(1,47) = 476, p < 0.001, R2 = 0.8545).”
+correlation between the two (Pearson’s r = 0.92). The overall model (Total Male enrollment = -17,112,153 + 9069 (Year) explains a significant amount of variance in enrollment rate (F(1,47) = 476, p < 0.001, R2 = 0.8545).”
 
 Total_Females-
 Year significantly predicts college enrollment rates for females (b = 30126, t(47) = 51.66, p < 0.001) with a strong positive
-correlation between the two (Pearson’s r = 0.99). The overall model (Total Female enrollment = -58955502 + 30126 (Year) explains a significant amount of variance in sepal width (F(1,47) = 2669, p < 0.001, R2 = 0.9827).
+correlation between the two (Pearson’s r = 0.99). The overall model (Total Female enrollment = -58955502 + 30126 (Year) explains a significant amount of variance in enrollment rate (F(1,47) = 2669, p < 0.001, R2 = 0.9827).
 
 
 
@@ -260,13 +277,13 @@ results of the model – make sure you describe interesting findings in text). Y
 concerns that you have with the model(s) you present, if any
 
 
-```{r}
+```{r, include=FALSE}
 
 
 # data wrangling
 faculty_salary1<- faculty_salary %>% 
   mutate(Discipline = case_when
-         (`Discipline (A = Theoretical, B = Applied)` == "B" ~ "Apllied", 
+         (`Discipline (A = Theoretical, B = Applied)` == "B" ~ "Applied", 
                   `Discipline (A = Theoretical, B = Applied)`  == "A" ~"Theoretical")) %>% 
   select(-`Discipline (A = Theoretical, B = Applied)`) 
 
@@ -319,14 +336,24 @@ vif(salary_model2)
 
 # try to take out years_employed and keep years_since_phd
 
+
+################################
+# this is the model we will keep
+#################################
+# make prof the refrence level for faculty_rank
+faculty_salary1$faculty_rank<- fct_relevel(faculty_salary1$faculty_rank, "Prof")
+
 salary_model3<- lm(salary~faculty_rank + years_since_phd  + sex + discipline, data = faculty_salary1)
 salary_model3
 
 summary(salary_model3)
+
 AIC(salary_model3)
 # aic = 9097.22
 vif(salary_model3)
 # This model also has no variables that are correlated
+
+############################################################################
 
 # explore the use of an interaction term between years_since_phd and years_employed
 
@@ -351,32 +378,21 @@ vif(salary_model5) # no concern for colinearity
 AIC(salary_model) # AIC = 9093.826
 
 #################
-# make a graph for faculty salary
+# make a graph for faculty salary for salary_model3
 #################
-
-salary_graph_rank<- ggplot(faculty_salary1, aes(x = faculty_rank, y = salary))+
-  geom_col()
-salary_graph_rank
-
-salary_graph_sex<- ggplot(faculty_salary1, aes(x = sex, y = salary))+
-  geom_col()
-salary_graph_sex
-
-# think of ways to communicate multilinear regression, stargazer table??
-# As of now use salary_model2 which exludes years_since_phd and includes years_employed
-
 
 
 ```
 
-```{r, results = `asis`}
+```{r, results = 'asis', echo=FALSE}
 
-stargazer(salary_model2, type = "html")
+stargazer(salary_model3, type = "html")
 # possibly use this graph when knitting to convay results not sure how to properly state results for multilinear regression like simple linevar regression. 
 ```
 
 
-
+Write Up:
+Formula: 
 
 
 
