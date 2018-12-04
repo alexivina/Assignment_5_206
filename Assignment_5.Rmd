@@ -3,6 +3,7 @@ title: "Assignment 5"
 author: "Alex Ivina"
 date: "November 26, 2018"
 output:
+  pdf_document: default
   html_document: default
   word_document: default
 ---
@@ -395,6 +396,43 @@ Write Up:
 Formula: 
 
 
+```{r}
 
+###Created model to look at factors affecting salary of professors
+
+salary_model_no_rank<- lm(salary~years_since_phd + years_employed + sex + discipline, data = faculty_salary1)
+
+salary_model_no_rank
+
+summary(salary_model_no_rank)
+
+###years employed is negative here which we wouldn't expect logically. try interaction variabe here to see if the association will cause both factors to be positive, as one would expect they would be. 
+```
+
+```{r}
+salary_model_interact<-lm(salary~ years_since_phd + years_employed + sex + discipline + years_since_phd*years_employed, data= faculty_salary1)
+
+salary_model_interact
+
+summary(salary_model_interact)
+
+##Interaction variable made both the years since phd and years employed postive, like they should be. 
+
+#Interpreting the model:
+
+##Model: 67,764.10+ 2391.08(years since phd)+ 1473.92(years_employed)+8188.37(sexMale)-14999.33(disciplineTheoretical) -62.23(years_since_phd:years_employed)
+
+#base pay of $67,764.10
+#Add $2,391 for each year since phd
+#Add $1,473 for each successive year employed
+#Males earn $8,188 more per year than females
+#Professors in the theoretical disciplines earn about $15,000 less per year than professors in the applied disiplines. 
+```
+
+```{r}
+vif(salary_model_interact)
+AIC(salary_model_interact) 
+#AIC=9140.98
+```
 
 
