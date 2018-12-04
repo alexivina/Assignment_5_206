@@ -175,7 +175,7 @@ female_enrollment = -0.0000005896 + 30130(Year)
 
 2. Shifts in female PhD recipients by field (1985, 2000, and 2015). Describe if and how there was a shift in PhDs awarded to females in four fields (Physical and Earth Sciences, Engineering, Education, and Humanities & Arts) in 1985, 2000, and 2015. Describe your results statistically, in a graph or table, and in text. Note: There are several ways that you can interpret this question. You are invited to decide which you think is/are most interesting. Just be really clear about what you are asking/answering in your report.
 
-```{r}
+```{r, echo=FALSE, message=FALSE, error=FALSE, warning=FALSE, results=TRUE}
 Phds <- read_csv("Phds_female_fields.csv")
 
 rownames(Phds) <- c("Female_Lifesciences", "Female_Physical_science", "Female_Math", "Female_Psychology", "Female_Engineering", "Female_Education", "Female_Humanities", "Female_Other") 
