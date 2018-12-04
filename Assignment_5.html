@@ -503,49 +503,8 @@ bar_graph_stack</code></pre>
 <li>Male and female salaries for starting postdoctoral and other employment positions (2015). Compare median salaries for male and female doctorate recipients in 2015. Answer these two questions: Does median salary differ significantly between male and female starting postdoc positions? Does median salary differ significantly between male and female PhD recipients in non-postdoc employment positions?</li>
 </ol>
 <p>=======</p>
-<pre><code>## 
-##  Wilcoxon signed rank test with continuity correction
-## 
-## data:  salary$Job_male and salary$Job_female
-## V = 101, p-value = 0.002572
-## alternative hypothesis: true location shift is not equal to 0</code></pre>
-<pre><code>## 
-## Cliff's Delta
-## 
-## delta estimate: 0.2133333 (small)
-## 95 percent confidence interval:
-##        inf        sup 
-## -0.2155378  0.5732121</code></pre>
-<pre><code>## 
-##  Wilcoxon signed rank test with continuity correction
-## 
-## data:  salary$Postdoc_male and salary$postdoc_female
-## V = 19.5, p-value = 0.8884
-## alternative hypothesis: true location shift is not equal to 0</code></pre>
-<pre><code>## 
-## Cliff's Delta
-## 
-## delta estimate: 0.04 (negligible)
-## 95 percent confidence interval:
-##        inf        sup 
-## -0.3710946  0.4379849</code></pre>
-<p>Communicating Statistical Results: Non-Parametric Wilcomxon Signed Rank anaylsis for data collected from 15 fields of study in the year 2015 revealed th at the median salaries (in dollars) differed significantly for male and female PhD recipients in non-postdoc employment positions (V= 101, p=0.003). In all fields except Physics &amp; Astonomy, men recieved either equal or moderately higher salaries(cliffs delta=0.213).</p>
+<p>Communicating Statistical Results: Non-Parametric Wilcomxon Signed Rank anaylsis for data collected from 15 fields of study in the year 2015 revealed that the median salaries (in dollars) differed significantly for male and female PhD recipients in non-postdoc employment positions (V= 101, p=0.003). In all fields except Physics &amp; Astonomy, men recieved either equal or moderately higher salaries(cliffs delta=0.213).</p>
 <p>However, a separate non-parametric wimcoxon signed rank test for PhD recipients starting posdoc positions revealed that there was <em>not</em> a signficant difference between salaries for males and females (V=19.5, p=.888). In several fields of study, males and females recieved the exact same salary. Females recieved a slightly higher median salary in some fields, while males were paid slightly more in others (cliffs delta=.04).</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>155b04f2a872e8703c8a57a3c4fe93877f2c5fe3</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
 <ol start="4" style="list-style-type: decimal">
 <li>Exploring academic salaries for professors in U.S. colleges. Explore relationships between variables in the ‘Faculty salary data (2008 - 2009 survey)’ dataset. Develop a model describing faculty salary based on data for faculty sex, rank, years in current position, field, and number of years since doctoral degree was earned. You should make decisions regarding which variables should remain in your final model. Describe the results qualitatively and quantitatively (i.e., don’t just report the statistical results of the model – make sure you describe interesting findings in text). You can also discuss any concerns that you have with the model(s) you present, if any</li>
 </ol>
@@ -810,7 +769,7 @@ salary_graph_sex</code></pre>
 stargazer(salary_model2)</code></pre>
 <pre><code>## 
 ## % Table created by stargazer v.5.2.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-## % Date and time: Mon, Dec 03, 2018 - 13:15:29
+## % Date and time: Mon, Dec 03, 2018 - 16:12:22
 ## \begin{table}[!htbp] \centering 
 ##   \caption{} 
 ##   \label{} 
