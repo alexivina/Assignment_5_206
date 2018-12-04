@@ -402,7 +402,11 @@ Write Up:
 Formula: 
 salary = 127854.34 -32928.4(Associate_Professor) - 46032.55(Assitant_Professor) + 61.01(years_since_phd) + 4349.37(sexMale) - 13937.47(disciplineTheoretical)
 
-<<<<<<< HEAD
+The formula for faculty salary will predict salary as a function of a professors rank (here we are using professor as the refrence level and comparing against associate professor and assitant professor), years since someone has gained their PHD, their sex ( here female is the refrence level and male is included in the graph) and lastly discipline (we only look at if the diswcipline is theoretical or applied and here we use applied as the refrence level). What we found was that professors were paid the most and assitant profressors the least by rank and that years every year after your PHD you earned slightly more. It was also apparent that males earned higher wages than femlaes and that those in theoretical disciplines earned less than those in technical disciplines. Over all these variables accounted for 44% (R^2^ = 0.4401) of changes in salary. Looking at the variables observed the rank of a professor and the deispline showed significant results (p-value<0.001) where as sex and years since one earned their PHD did not yeild significant results (p-value>0.001). 
+
+
+
+
 ```{r}
 
 ###Created model to look at factors affecting salary of professors
@@ -416,12 +420,13 @@ summary(salary_model_no_rank)
 ###years employed is negative here which we wouldn't expect logically. try interaction variabe here to see if the association will cause both factors to be positive, as one would expect they would be. 
 ```
 
+
 ```{r}
 salary_model_interact<-lm(salary~ years_since_phd + years_employed + sex + discipline + years_since_phd*years_employed, data= faculty_salary1)
-=======
-The formula for faculty salary will predict salary as a function of a professors rank (here we are using professor as the refrence level and comparing against associate professor and assitant professor), years since someone has gained their PHD, their sex ( here female is the refrence level and male is included in the graph) and lastly discipline (we only look at if the diswcipline is theoretical or applied and here we use applied as the refrence level). What we found was that professors were paid the most and assitant profressors the least by rank and that years every year after your PHD you earned slightly more. It was also apparent that males earned higher wages than femlaes and that those in theoretical disciplines earned less than those in technical disciplines. Over all these variables accounted for 44% (R^2^ = 0.4401) of changes in salary. Looking at the variables observed the rank of a professor and the deispline showed significant results (p-value<0.001) where as sex and years since one earned their PHD did not yeild significant results (p-value>0.001). 
->>>>>>> 99cdf59be3c4e0ba7b6db377b6b8e3ed87cad926
+```
 
+
+```{r}
 salary_model_interact
 
 summary(salary_model_interact)
@@ -430,19 +435,38 @@ summary(salary_model_interact)
 
 #Interpreting the model:
 
-##Model: 67,764.10+ 2391.08(years since phd)+ 1473.92(years_employed)+8188.37(sexMale)-14999.33(disciplineTheoretical) -62.23(years_since_phd:years_employed)
+##Model: $67,764.10+ $2391.08(years since phd)+ $1473.92(years_employed)+ $8188.37(sexMale)-$14999.33(disciplineTheoretical) -62.23(years_since_phd:years_employed)
 
+#According to the model, professors expect:
 #base pay of $67,764.10
-#Add $2,391 for each year since phd
-#Add $1,473 for each successive year employed
-#Males earn $8,188 more per year than females
-#Professors in the theoretical disciplines earn about $15,000 less per year than professors in the applied disiplines. 
+#Additional $2,391 for each year since phd
+#Additional $1,473 for each successive year employed
+#Males to earn $8,188 more per year than females
+#Professors in the theoretical disciplines to earn about $15,000 less per year than professors in the applied disiplines. 
 ```
+
+
 
 ```{r}
 vif(salary_model_interact)
 AIC(salary_model_interact) 
 #AIC=9140.98
 ```
+
+```{r, results = 'asis', echo=FALSE}
+
+stargazer(salary_model_interact, type = "html")
+```
+
+Model: $67,764.10+ $2391.08(years since phd)+ $1473.92(years_employed)+ $8188.37(sexMale)-$14999.33(disciplineTheoretical) -62.23(years_since_phd:years_employed)
+
+According to the model, professors expect:
+-base pay of $67,764.10
+-Additional $2,391 for each year since phd
+-Additional $1,473 for each successive year employed
+-Males to earn $8,188 more per year than females
+-Professors in the theoretical disciplines to earn about $15,000 less per year than professors in the applied disiplines. 
+
+Each of these factors is statistically significant (years_since_phd, p=<.001, years_employed, p=<.001, sexMale P=0.046, disciplineTheoretical p=<.001). Overall model significantly predicts outcomes (p<.001).
 
 
