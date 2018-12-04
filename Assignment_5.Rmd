@@ -2,7 +2,9 @@
 title: "Assignment 5"
 author: "Alex Ivina"
 date: "November 26, 2018"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -296,6 +298,7 @@ summary(salary_model)
 vif(salary_model)
 # vif for all variables is under 4 so there is no colinearity between variables
 AIC(salary_model)
+# aic = 9093.826
 
 ############
 # test to see if we can make the model better
@@ -305,7 +308,7 @@ salary_model2<- lm(salary~faculty_rank + years_employed + sex + discipline, data
 salary_model2
 
 # This model might not make sense because the coefficient for years_empoloyed is negative
-
+summary(salary_model2)
 AIC(salary_model2)
 # aic = 9096.813
 vif(salary_model2)
@@ -316,6 +319,7 @@ vif(salary_model2)
 salary_model3<- lm(salary~faculty_rank + years_since_phd  + sex + discipline, data = faculty_salary1)
 salary_model3
 
+summary(salary_model3)
 AIC(salary_model3)
 # aic = 9097.22
 vif(salary_model3)
@@ -358,12 +362,15 @@ salary_graph_sex
 # think of ways to communicate multilinear regression, stargazer table??
 # As of now use salary_model2 which exludes years_since_phd and includes years_employed
 
-stargazer(salary_model2)
-# possibly use this graph when knitting to convay results not sure how to properly state results for multilinear regression like simple linevar regression. 
 
 
 ```
 
+```{r, results = `asis`}
+
+stargazer(salary_model2, type = "html")
+# possibly use this graph when knitting to convay results not sure how to properly state results for multilinear regression like simple linevar regression. 
+```
 
 
 
